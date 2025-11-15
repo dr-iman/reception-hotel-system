@@ -1,139 +1,134 @@
-# main.py
-"""
-فایل اجرایی اصلی سیستم پذیرش هتل - نسخه با پشتیبانی Redis
-"""
-
+# main.py - نسخه بهینه شده برای Redis 8.2.3
 import sys
 import os
 import logging
 from pathlib import Path
 
-# افزودن مسیر پروژه به sys.path
+# پاک کردن کش قبل از هر چیزی
+def clear_python_cache():
+    """پاک کردن کامل کش‌های Python"""
+    import shutil
+    cache_dirs = [
+        '__pycache__',
+        'app/__pycache__', 
+        'app/models/__pycache__',
+        'app/core/__pycache__',
+        'app/services/__pycache__',
+        'app/views/__pycache__'
+    ]
+    
+    for cache_dir in cache_dirs:
+        cache_path = Path(cache_dir)
+        if cache_path.exists():
+            shutil.rmtree(cache_path)
+            print(f"🧹 پاک شد: {cache_dir}")
+
+clear_python_cache()
+
+# تنظیمات محیط
+os.environ['SQLALCHEMY_SILENCE_UBER_WARNING'] = '1'
+os.environ['PYTHONWARNINGS'] = 'ignore'
+
+# افزودن مسیر پروژه
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
 
-# تنظیمات لاگ‌گیری
 def setup_logging():
     """تنظیمات لاگ‌گیری"""
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.StreamHandler()
-        ]
+        handlers=[logging.StreamHandler()]
     )
+    return logging.getLogger(__name__)
 
-    logger = logging.getLogger(__name__)
-    logger.info("=" * 50)
-    logger.info("شروع سیستم پذیرش هتل - با پشتیبانی Redis")
-    logger.info("=" * 50)
-
-    return logger
-
-def initialize_redis(logger):
-    """راه‌اندازی Redis"""
+def initialize_redis_8_2_3(logger):
+    """راه‌اندازی Redis برای نسخه 8.2.3"""
     try:
         from app.core.database import init_redis
         
-        logger.info("در حال اتصال به Redis...")
+        logger.info("🔗 در حال اتصال به Redis 8.2.3...")
         if init_redis():
             logger.info("✅ اتصال به Redis موفق بود")
             return True
         else:
-            logger.warning("⚠️ اتصال به Redis ناموفق بود - ادامه بدون Redis")
+            logger.warning("⚠️ اتصال به Redis ناموفق - ادامه بدون Redis")
             return False
             
     except Exception as e:
-        logger.warning(f"⚠️ خطا در راه‌اندازی Redis: {e} - ادامه بدون Redis")
+        logger.warning(f"⚠️ خطا در Redis: {e} - ادامه بدون Redis")
         return False
 
-def initialize_database(logger):
-    """راه‌اندازی پایگاه داده"""
+def initialize_database_fixed(logger):
+    """راه‌اندازی دیتابیس با حل تعارض مدل‌ها"""
     try:
-        logger.info("در حال اتصال به پایگاه داده...")
-
         from app.core.database import init_db, create_tables
         from app.services.reception.initial_data_service import InitialDataService
-
-        # راه‌اندازی دیتابیس
+        
+        logger.info("🗄️ در حال اتصال به دیتابیس...")
         if not init_db():
-            logger.error("اتصال به دیتابیس ناموفق بود")
+            logger.error("❌ اتصال به دیتابیس ناموفق")
             return False
 
         # ایجاد جداول
-        logger.info("در حال ایجاد ساختار داده‌ها...")
+        logger.info("📋 در حال ایجاد جداول...")
         create_tables()
 
-        # بررسی و ایجاد داده‌های اولیه
-        logger.info("در حال بارگذاری داده‌های اولیه...")
+        # داده‌های اولیه
+        logger.info("📥 در حال بارگذاری داده‌های اولیه...")
         InitialDataService.create_reception_initial_data()
 
-        logger.info("پایگاه داده با موفقیت راه‌اندازی شد")
+        logger.info("✅ دیتابیس با موفقیت راه‌اندازی شد")
         return True
 
     except Exception as e:
-        logger.error(f"خطا در راه‌اندازی پایگاه داده: {e}")
+        logger.error(f"❌ خطا در دیتابیس: {e}")
         return False
-
-def setup_application():
-    """تنظیمات کلی برنامه"""
-    # تنظیم فونت برای پشتیبانی از فارسی
-    font = QFont()
-    font.setFamily("Tahoma")
-    font.setPointSize(9)
-    QApplication.setFont(font)
-
-    # ایجاد برنامه
-    app = QApplication(sys.argv)
-
-    # تنظیم نام برنامه
-    app.setApplicationName("سیستم پذیرش هتل")
-    app.setApplicationVersion("1.0.0")
-    app.setOrganizationName("هتل آراد")
-
-    return app
 
 def main():
     """تابع اصلی"""
-    # تنظیمات لاگ‌گیری
     logger = setup_logging()
-
+    
     try:
-        # تنظیمات برنامه
-        app = setup_application()
+        logger.info("🚀 شروع سیستم پذیرش هتل...")
+        logger.info("🔧 نسخه Redis: 8.2.3")
+
+        # تنظیمات UI
+        app = QApplication(sys.argv)
+        font = QFont()
+        font.setFamily("Tahoma")
+        font.setPointSize(9)
+        app.setFont(font)
+        
+        app.setApplicationName("سیستم پذیرش هتل")
+        app.setApplicationVersion("2.0.0")
 
         # راه‌اندازی Redis
-        redis_initialized = initialize_redis(logger)
+        redis_ok = initialize_redis_8_2_3(logger)
 
         # راه‌اندازی دیتابیس
-        if not initialize_database(logger):
-            logger.error("خروج به دلیل خطا در راه‌اندازی دیتابیس")
+        if not initialize_database_fixed(logger):
+            logger.error("💥 خروج به دلیل خطا در دیتابیس")
             return 1
 
-        # ایجاد و نمایش پنجره اصلی
-        logger.info("در حال ایجاد پنجره اصلی...")
+        # ایجاد پنجره اصلی
+        logger.info("🖥️ در حال ایجاد رابط کاربری...")
         from app.views.main_window import MainWindow
         main_window = MainWindow()
-        main_window.show()
-
-        # نمایش حداکثر شده
         main_window.showMaximized()
-
-        logger.info("برنامه با موفقیت راه‌اندازی شد و آماده استفاده است")
-        if redis_initialized:
-            logger.info("✅ سیستم با پشتیبانی کامل Redis فعال است")
+        
+        if redis_ok:
+            logger.info("🎉 سیستم با پشتیبانی کامل Redis 8.2.3 راه‌اندازی شد!")
         else:
             logger.info("⚠️ سیستم بدون Redis در حال اجراست")
-
-        # اجرای حلقه اصلی
+        
         return app.exec_()
 
     except Exception as e:
-        logger.critical(f"خطای بحرانی در اجرای برنامه: {e}")
+        logger.critical(f"💥 خطای بحرانی: {str(e)[:200]}...")
         return 1
 
 if __name__ == '__main__':
