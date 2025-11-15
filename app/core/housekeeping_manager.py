@@ -438,50 +438,52 @@ class HousekeepingManager:
                 'error': str(e)
             }
 
-    def _create_checklist_items(self, task, task_type: str):
-        """ایجاد آیتم‌های چک‌لیست برای وظیفه"""
-        try:
-            from app.models.reception.housekeeping_models import HousekeepingChecklist
+ # در housekeeping_manager.py - خطوط مشکل‌دار را پیدا و اصلاح کنید:
 
-            checklist = self.standard_checklists.get(task_type)
-            if not checklist:
-                return
+def _create_checklist_items(self, task, task_type: str):
+    """ایجاد آیتم‌های چک‌لیست برای وظیفه"""
+    try:
+        from app.models.reception.housekeeping_models import HousekeepingChecklist
+        
+        checklist = self.standard_checklists.get(task_type)
+        if not checklist:
+            return
 
-            with db_session() as session:
-                # آیتم‌های حمام
-                for item in checklist.bathroom_items:
-                    checklist_item = HousekeepingChecklist(
-                        task_id=task.id,
-                        item_name=item,
-                        category='bathroom',
-                        status='pending'
-                    )
-                    session.add(checklist_item)
+        with db_session() as session:
+            # آیتم‌های حمام
+            for item in checklist.bathroom_items:
+                checklist_item = HousekeepingChecklist(
+                    task_id=task.id,
+                    item_name=item,
+                    category='bathroom',
+                    status='pending'
+                )
+                session.add(checklist_item)
 
-                # آیتم‌های اتاق خواب
-                for item in checklist.bedroom_items:
-                    checklist_item = HousekeepingChecklist(
-                        task_id=task.id,
-                        item_name=item,
-                        category='bedroom',
-                        status='pending'
-                    )
-                    session.add(checklist_item)
+            # آیتم‌های اتاق خواب  
+            for item in checklist.bedroom_items:
+                checklist_item = HousekeepingChecklist(
+                    task_id=task.id,
+                    item_name=item,
+                    category='bedroom',
+                    status='pending'
+                )
+                session.add(checklist_item)
 
-                # آیتم‌های امکانات
-                for item in checklist.amenities_items:
-                    checklist_item = HousekeepingChecklist(
-                        task_id=task.id,
-                        item_name=item,
-                        category='amenities',
-                        status='pending'
-                    )
-                    session.add(checklist_item)
+            # آیتم‌های امکانات
+            for item in checklist.amenities_items:
+                checklist_item = HousekeepingChecklist(
+                    task_id=task.id,
+                    item_name=item,
+                    category='amenities',
+                    status='pending'
+                )
+                session.add(checklist_item)
 
-                session.commit()
+            session.commit()
 
-        except Exception as e:
-            logger.error(f"❌ خطا در ایجاد آیتم‌های چک‌لیست: {e}")
+    except Exception as e:
+        logger.error(f"❌ خطا در ایجاد آیتم‌های چک‌لیست: {e}")
 
     def _get_required_supplies(self, task_type: str) -> List[str]:
         """دریافت مواد مصرفی مورد نیاز برای نوع وظیفه"""
