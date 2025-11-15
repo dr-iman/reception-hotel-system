@@ -375,7 +375,8 @@ class MaintenanceManager:
                 work_order.status = MaintenanceStatus.COMPLETED.value
                 work_order.actual_end = datetime.now()
                 work_order.work_performed = work_performed
-                work_order.parts_used = parts_used
+                # اصلاح این خط - تبدیل به JSON اگر نیاز است
+                work_order.parts_used = str(parts_used) if parts_used else None
                 work_order.labor_hours = labor_hours
 
                 # به‌روزرسانی وضعیت درخواست
