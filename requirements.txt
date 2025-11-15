@@ -1,0 +1,26 @@
+# requirements.txt
+# وابستگی‌های اصلی
+PyQt5==5.15.9
+SQLAlchemy==2.0.23
+psycopg2-binary==2.9.9
+redis==5.0.1
+requests==2.31.0
+
+# توسعه و ابزارها
+python-dotenv==1.0.0
+pytest==7.4.3
+pytest-qt==4.2.0
+black==23.9.1
+flake8==6.1.0
+
+# گزارش‌گیری و خروجی
+openpyxl==3.1.2
+python-dateutil==2.8.2
+
+# امنیت
+cryptography==41.0.7
+bcrypt==4.0.1
+
+# utilities
+python-multipart==0.0.6
+email-validator==2.1.0
