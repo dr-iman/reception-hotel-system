@@ -7,6 +7,7 @@ from app.core.database import Base
 class Guest(Base):
     """مدل اطلاعات کامل مهمان"""
     __tablename__ = 'reception_guests'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
 
