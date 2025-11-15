@@ -1,6 +1,6 @@
 # main.py
 """
-فایل اجرایی اصلی سیستم پذیرش هتل
+فایل اجرایی اصلی سیستم پذیرش هتل - نسخه با پشتیبانی Redis
 """
 
 import sys
@@ -16,46 +16,53 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
 
-from app.views.main_window import MainWindow
-from app.core.database import init_db, init_redis, create_tables
-from app.services.reception.initial_data_service import InitialDataService
-from config import config
-
 # تنظیمات لاگ‌گیری
 def setup_logging():
     """تنظیمات لاگ‌گیری"""
-    # ایجاد دایرکتوری لاگ‌ها اگر وجود ندارد
-    config.app.log_dir.mkdir(parents=True, exist_ok=True)
-
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(config.app.log_dir / 'reception_system.log', encoding='utf-8'),
             logging.StreamHandler()
         ]
     )
 
     logger = logging.getLogger(__name__)
     logger.info("=" * 50)
-    logger.info(f"شروع سیستم پذیرش هتل - نسخه {config.app.version}")
+    logger.info("شروع سیستم پذیرش هتل - با پشتیبانی Redis")
     logger.info("=" * 50)
 
     return logger
+
+def initialize_redis(logger):
+    """راه‌اندازی Redis"""
+    try:
+        from app.core.database import init_redis
+        
+        logger.info("در حال اتصال به Redis...")
+        if init_redis():
+            logger.info("✅ اتصال به Redis موفق بود")
+            return True
+        else:
+            logger.warning("⚠️ اتصال به Redis ناموفق بود - ادامه بدون Redis")
+            return False
+            
+    except Exception as e:
+        logger.warning(f"⚠️ خطا در راه‌اندازی Redis: {e} - ادامه بدون Redis")
+        return False
 
 def initialize_database(logger):
     """راه‌اندازی پایگاه داده"""
     try:
         logger.info("در حال اتصال به پایگاه داده...")
 
+        from app.core.database import init_db, create_tables
+        from app.services.reception.initial_data_service import InitialDataService
+
         # راه‌اندازی دیتابیس
         if not init_db():
             logger.error("اتصال به دیتابیس ناموفق بود")
             return False
-
-        # راه‌اندازی Redis
-        if not init_redis():
-            logger.warning("اتصال به Redis ناموفق بود")
 
         # ایجاد جداول
         logger.info("در حال ایجاد ساختار داده‌ها...")
@@ -84,9 +91,9 @@ def setup_application():
     app = QApplication(sys.argv)
 
     # تنظیم نام برنامه
-    app.setApplicationName(config.app.app_name)
-    app.setApplicationVersion(config.app.version)
-    app.setOrganizationName(config.app.company_name)
+    app.setApplicationName("سیستم پذیرش هتل")
+    app.setApplicationVersion("1.0.0")
+    app.setOrganizationName("هتل آراد")
 
     return app
 
@@ -99,6 +106,9 @@ def main():
         # تنظیمات برنامه
         app = setup_application()
 
+        # راه‌اندازی Redis
+        redis_initialized = initialize_redis(logger)
+
         # راه‌اندازی دیتابیس
         if not initialize_database(logger):
             logger.error("خروج به دلیل خطا در راه‌اندازی دیتابیس")
@@ -106,6 +116,7 @@ def main():
 
         # ایجاد و نمایش پنجره اصلی
         logger.info("در حال ایجاد پنجره اصلی...")
+        from app.views.main_window import MainWindow
         main_window = MainWindow()
         main_window.show()
 
@@ -113,6 +124,10 @@ def main():
         main_window.showMaximized()
 
         logger.info("برنامه با موفقیت راه‌اندازی شد و آماده استفاده است")
+        if redis_initialized:
+            logger.info("✅ سیستم با پشتیبانی کامل Redis فعال است")
+        else:
+            logger.info("⚠️ سیستم بدون Redis در حال اجراست")
 
         # اجرای حلقه اصلی
         return app.exec_()
