@@ -155,8 +155,8 @@ def create_tables():
     try:
         # ایمپورت تمام مدل‌ها برای ایجاد جداول
         from app.models.reception import guest_models, room_status_models, payment_models
-        #from app.models.reception import housekeeping_models, maintenance_models, staff_models
-        from app.models.reception import notification_models, report_models, staff_models
+        from app.models.reception import housekeeping_models, maintenance_models, staff_models
+        from app.models.reception import notification_models, report_models
 
         Base.metadata.create_all(bind=engine)
         logger.info("✅ جداول سیستم پذیرش با موفقیت در دیتابیس ایجاد شدند")
