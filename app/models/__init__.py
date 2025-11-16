@@ -9,8 +9,8 @@ from app.models.reception import (
     guest_models,
     room_status_models,
     payment_models,
-    housekeeping_models,
-    maintenance_models,
+#    housekeeping_models,
+#    maintenance_models,
     staff_models,
     notification_models,
     report_models
@@ -26,20 +26,20 @@ from app.models.reception.room_status_models import RoomAssignment, RoomStatusCh
 from app.models.reception.payment_models import Payment, GuestFolio, FolioTransaction, CashierShift
 
 # Import کلاس‌های اصلی مدل‌های خانه‌داری
-from app.models.reception.housekeeping_models import (
-    HousekeepingTask,
-    HousekeepingChecklist,
-    HousekeepingSchedule,
-    LostAndFound
-)
+#from app.models.reception.housekeeping_models import (
+#    HousekeepingTask,
+#    HousekeepingChecklist,
+#    HousekeepingSchedule,
+#    LostAndFound
+#)
 
 # Import کلاس‌های اصلی مدل‌های تعمیرات
-from app.models.reception.maintenance_models import (
-    MaintenanceRequest,
-    MaintenanceWorkOrder,
-    MaintenanceInventory,
-    PreventiveMaintenance
-)
+#from app.models.reception.maintenance_models import (
+#    MaintenanceRequest,
+#    MaintenanceWorkOrder,
+#    MaintenanceInventory,
+#    PreventiveMaintenance
+#)
 
 # Import کلاس‌های اصلی مدل‌های پرسنل
 from app.models.reception.staff_models import Staff, User, UserActivityLog
@@ -62,10 +62,10 @@ __all__ = [
     'Payment', 'GuestFolio', 'FolioTransaction', 'CashierShift',
 
     # مدل‌های خانه‌داری و نظافت
-    'HousekeepingTask', 'HousekeepingChecklist', 'HousekeepingSchedule', 'LostAndFound',
+#    'HousekeepingTask', 'HousekeepingChecklist', 'HousekeepingSchedule', 'LostAndFound',
 
     # مدل‌های تعمیرات و نگهداری
-    'MaintenanceRequest', 'MaintenanceWorkOrder', 'MaintenanceInventory', 'PreventiveMaintenance',
+#    'MaintenanceRequest', 'MaintenanceWorkOrder', 'MaintenanceInventory', 'PreventiveMaintenance',
 
     # مدل‌های مدیریت پرسنل
     'Staff', 'User', 'UserActivityLog',
@@ -81,8 +81,8 @@ __all__ = [
 GUEST_MODELS = ['Guest', 'Companion', 'Stay', 'CompanionStay']
 ROOM_MODELS = ['RoomAssignment', 'RoomStatusChange', 'RoomStatusSnapshot']
 PAYMENT_MODELS = ['Payment', 'GuestFolio', 'FolioTransaction', 'CashierShift']
-HOUSEKEEPING_MODELS = ['HousekeepingTask', 'HousekeepingChecklist', 'HousekeepingSchedule', 'LostAndFound']
-MAINTENANCE_MODELS = ['MaintenanceRequest', 'MaintenanceWorkOrder', 'MaintenanceInventory', 'PreventiveMaintenance']
+#HOUSEKEEPING_MODELS = ['HousekeepingTask', 'HousekeepingChecklist', 'HousekeepingSchedule', 'LostAndFound']
+#MAINTENANCE_MODELS = ['MaintenanceRequest', 'MaintenanceWorkOrder', 'MaintenanceInventory', 'PreventiveMaintenance']
 STAFF_MODELS = ['Staff', 'User', 'UserActivityLog']
 NOTIFICATION_MODELS = ['Notification', 'SyncRecord']
 REPORT_MODELS = ['DailyReport', 'DailyReportDetail']
@@ -90,7 +90,6 @@ REPORT_MODELS = ['DailyReport', 'DailyReportDetail']
 # لیست کامل تمام مدل‌های سیستم
 ALL_MODELS = (
     GUEST_MODELS + ROOM_MODELS + PAYMENT_MODELS +
-    HOUSEKEEPING_MODELS + MAINTENANCE_MODELS +
     STAFF_MODELS + NOTIFICATION_MODELS + REPORT_MODELS
 )
 
@@ -113,14 +112,14 @@ def get_model_classes():
         'GuestFolio': GuestFolio,
         'FolioTransaction': FolioTransaction,
         'CashierShift': CashierShift,
-        'HousekeepingTask': HousekeepingTask,
-        'HousekeepingChecklist': HousekeepingChecklist,
-        'HousekeepingSchedule': HousekeepingSchedule,
-        'LostAndFound': LostAndFound,
-        'MaintenanceRequest': MaintenanceRequest,
-        'MaintenanceWorkOrder': MaintenanceWorkOrder,
-        'MaintenanceInventory': MaintenanceInventory,
-        'PreventiveMaintenance': PreventiveMaintenance,
+#        'HousekeepingTask': HousekeepingTask,
+#        'HousekeepingChecklist': HousekeepingChecklist,
+#        'HousekeepingSchedule': HousekeepingSchedule,
+#        'LostAndFound': LostAndFound,
+#        'MaintenanceRequest': MaintenanceRequest,
+#        'MaintenanceWorkOrder': MaintenanceWorkOrder,
+#        'MaintenanceInventory': MaintenanceInventory,
+#        'PreventiveMaintenance': PreventiveMaintenance,
         'Staff': Staff,
         'User': User,
         'UserActivityLog': UserActivityLog,
