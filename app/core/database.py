@@ -4,7 +4,7 @@
 """
 
 import logging
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import QueuePool
@@ -56,7 +56,8 @@ class DatabaseManager:
 
                 # تست اتصال
                 with engine.connect() as conn:
-                    conn.execute("SELECT 1")
+                    result = conn.execute(text("SELECT 1"))
+                    result.fetchone()
 
                 SessionLocal = scoped_session(sessionmaker(
                     autocommit=False,
@@ -154,8 +155,8 @@ def create_tables():
     try:
         # ایمپورت تمام مدل‌ها برای ایجاد جداول
         from app.models.reception import guest_models, room_status_models, payment_models
-        from app.models.reception import housekeeping_models, maintenance_models, staff_models
-        from app.models.reception import notification_models, report_models
+        #from app.models.reception import housekeeping_models, maintenance_models, staff_models
+        from app.models.reception import notification_models, report_models, staff_models
 
         Base.metadata.create_all(bind=engine)
         logger.info("✅ جداول سیستم پذیرش با موفقیت در دیتابیس ایجاد شدند")
