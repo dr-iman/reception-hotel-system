@@ -16,13 +16,13 @@ from .audit_trail import (
 )
 
 # ایمپورت سایر ماژول‌های core
-try:
+#try:
     from .notification_service import NotificationService, notification_service
-    from .housekeeping_manager import HousekeepingManager, housekeeping_manager
-    from .maintenance_manager import MaintenanceManager, maintenance_manager
-except ImportError:
+#    from .housekeeping_manager import HousekeepingManager, housekeeping_manager
+#    from .maintenance_manager import MaintenanceManager, maintenance_manager
+#except ImportError:
     # برای محیط‌های توسعه که این ماژول‌ها هنوز ایجاد نشده‌اند
-    pass
+#    pass
 
 __all__ = [
     # Database
@@ -40,7 +40,7 @@ __all__ = [
     'audit_manager', 'audit_log', 'log_audit_event',
 
     # Other core modules
-    'NotificationService', 'notification_service',
-    'HousekeepingManager', 'housekeeping_manager',
-    'MaintenanceManager', 'maintenance_manager'
+    'NotificationService', 'notification_service'
+#    'HousekeepingManager', 'housekeeping_manager',
+#    'MaintenanceManager', 'maintenance_manager'
 ]
