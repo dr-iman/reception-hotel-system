@@ -17,11 +17,12 @@
 """
 
 # Import کلاس‌های مدل از ماژول‌های مختلف
+from .app.core.database import Base
 from .guest_models import Guest, Companion, Stay, CompanionStay
 from .room_status_models import RoomAssignment, RoomStatusChange, RoomStatusSnapshot
 from .payment_models import Payment, GuestFolio, FolioTransaction, CashierShift
-from .housekeeping_models import HousekeepingTask, HousekeepingChecklist, HousekeepingSchedule, LostAndFound
-from .maintenance_models import MaintenanceRequest, MaintenanceWorkOrder, MaintenanceInventory, PreventiveMaintenance
+#from .housekeeping_models import HousekeepingTask, HousekeepingChecklist, HousekeepingSchedule, LostAndFound
+#from .maintenance_models import MaintenanceRequest, MaintenanceWorkOrder, MaintenanceInventory, PreventiveMaintenance
 from .staff_models import Staff, User, UserActivityLog
 from .notification_models import Notification, SyncRecord
 from .report_models import DailyReport, DailyReportDetail
@@ -38,10 +39,10 @@ __all__ = [
     'Payment', 'GuestFolio', 'FolioTransaction', 'CashierShift',
 
     # مدل‌های خانه‌داری
-    'HousekeepingTask', 'HousekeepingChecklist', 'HousekeepingSchedule', 'LostAndFound',
+#    'HousekeepingTask', 'HousekeepingChecklist', 'HousekeepingSchedule', 'LostAndFound',
 
     # مدل‌های تعمیرات
-    'MaintenanceRequest', 'MaintenanceWorkOrder', 'MaintenanceInventory', 'PreventiveMaintenance',
+#    'MaintenanceRequest', 'MaintenanceWorkOrder', 'MaintenanceInventory', 'PreventiveMaintenance',
 
     # مدل‌های پرسنل
     'Staff', 'User', 'UserActivityLog',
@@ -79,20 +80,20 @@ FINANCIAL_MODELS = [
 ]
 
 ## مدل‌های خانه‌داری
-HOUSEKEEPING_MODELS = [
-    HousekeepingTask,       # وظایف نظافت
-    HousekeepingChecklist,  # چک‌لیست‌های نظافت
-    HousekeepingSchedule,   # برنامه‌ریزی نظافت
-    LostAndFound           # اشیای گمشده
-]
+#HOUSEKEEPING_MODELS = [
+#    HousekeepingTask,       # وظایف نظافت
+#    HousekeepingChecklist,  # چک‌لیست‌های نظافت
+#    HousekeepingSchedule,   # برنامه‌ریزی نظافت
+#    LostAndFound           # اشیای گمشده
+#]
 
 ## مدل‌های تعمیرات و نگهداری
-MAINTENANCE_MODELS = [
-    MaintenanceRequest,        # درخواست‌های تعمیرات
-    MaintenanceWorkOrder,      # دستورکارهای تعمیراتی
-    MaintenanceInventory,      # موجودی قطعات یدکی
-    PreventiveMaintenance      # نگهداری پیشگیرانه
-]
+#MAINTENANCE_MODELS = [
+#    MaintenanceRequest,        # درخواست‌های تعمیرات
+#    MaintenanceWorkOrder,      # دستورکارهای تعمیراتی
+#    MaintenanceInventory,      # موجودی قطعات یدکی
+#    PreventiveMaintenance      # نگهداری پیشگیرانه
+#]
 
 ## مدل‌های مدیریت پرسنل
 STAFF_MANAGEMENT_MODELS = [
@@ -116,8 +117,7 @@ REPORTING_MODELS = [
 # لیست کامل تمام مدل‌های بخش پذیرش
 ALL_RECEPTION_MODELS = (
     GUEST_MANAGEMENT_MODELS + ROOM_MANAGEMENT_MODELS + FINANCIAL_MODELS +
-    HOUSEKEEPING_MODELS + MAINTENANCE_MODELS + STAFF_MANAGEMENT_MODELS +
-    NOTIFICATION_MODELS + REPORTING_MODELS
+    STAFF_MANAGEMENT_MODELS + NOTIFICATION_MODELS + REPORTING_MODELS
 )
 
 # دیکشنری نگاشت نام مدل به کلاس
@@ -151,8 +151,8 @@ def get_model_by_category(category: str):
         'guest': GUEST_MANAGEMENT_MODELS,
         'room': ROOM_MANAGEMENT_MODELS,
         'financial': FINANCIAL_MODELS,
-        'housekeeping': HOUSEKEEPING_MODELS,
-        'maintenance': MAINTENANCE_MODELS,
+#        'housekeeping': HOUSEKEEPING_MODELS,
+#        'maintenance': MAINTENANCE_MODELS,
         'staff': STAFF_MANAGEMENT_MODELS,
         'notification': NOTIFICATION_MODELS,
         'reporting': REPORTING_MODELS
@@ -175,8 +175,8 @@ def initialize_models():
         ('مهمانان', GUEST_MANAGEMENT_MODELS),
         ('اتاق‌ها', ROOM_MANAGEMENT_MODELS),
         ('مالی', FINANCIAL_MODELS),
-        ('خانه‌داری', HOUSEKEEPING_MODELS),
-        ('تعمیرات', MAINTENANCE_MODELS),
+#        ('خانه‌داری', HOUSEKEEPING_MODELS),
+#        ('تعمیرات', MAINTENANCE_MODELS),
         ('پرسنل', STAFF_MANAGEMENT_MODELS),
         ('اطلاع‌رسانی', NOTIFICATION_MODELS),
         ('گزارش‌گیری', REPORTING_MODELS)
